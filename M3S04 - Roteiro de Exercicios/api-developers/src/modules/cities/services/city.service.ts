@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCityDto } from '../dto/create-city.dto';
 import { CityRepository } from '../city.repository';
 import { CityEntity } from '../entities/city.entity';
@@ -25,11 +25,6 @@ export class CityService {
     if (!foundCity) {
       throw new NotFoundException('cityNotFound');
     }
-
-    try {
-      await this.cityRepository.delete(foundCity);
-    } catch (error) {
-      throw new Error('could not delete city');
-    }
+    await this.cityRepository.delete(foundCity);
   }
 }
