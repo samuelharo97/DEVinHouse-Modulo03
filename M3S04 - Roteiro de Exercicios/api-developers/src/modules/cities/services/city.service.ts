@@ -6,10 +6,14 @@ import {
 import { CreateCityDto } from '../dto/create-city.dto';
 import { CityRepository } from '../city.repository';
 import { CityEntity } from '../entities/city.entity';
+import { StateRepository } from 'src/modules/states/state.repository';
 
 @Injectable()
 export class CityService {
-  constructor(private readonly cityRepository: CityRepository) {}
+  constructor(
+    private readonly cityRepository: CityRepository,
+    private readonly stateRepository: StateRepository,
+  ) {}
 
   async findById(id: number): Promise<CityEntity> {
     const foundCity = await this.cityRepository.getById(id);
@@ -21,11 +25,9 @@ export class CityService {
   }
 
   async addCustomCity(city: CreateCityDto): Promise<void> {
-    await this.cityRepository.findOneOrFail({
-      where: { state_id: city.state_id },
-    });
-
-    const cityAlreadyExists = await this.cityRepository.findOne({
+    await this.stateRepository.findOneByOrFail({ id: city.state_id });
+    console.log('found');
+    const cityAlreadyExists = await this.stateRepository.findOne({
       where: { name: city.name },
     });
 
