@@ -14,8 +14,6 @@ import { City } from '../interfaces';
 import { ApiTags } from '@nestjs/swagger';
 import { CityEntity } from '../entities/city.entity';
 import { NumberValidationPipe } from 'src/core/constraints/number-validation.pipe';
-import * as https from 'https';
-import * as crypto from 'crypto';
 import { CreateCityDto } from '../dto/create-city.dto';
 
 @ApiTags('cities')
