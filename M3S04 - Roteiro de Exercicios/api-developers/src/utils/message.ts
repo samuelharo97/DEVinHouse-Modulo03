@@ -2,6 +2,7 @@ const messages = {
   emailInvalid: 'E-mail com formato inválido',
   userNotFound: 'Usuário não encontrado',
   cityNotFound: 'Cidade não encontrada',
+  cityAlreadyExists: 'Cidade já existe no banco de dados',
   countryNotFound: 'País não encontrado',
   FieldMustBeString: 'O valor enviado não é uma string',
   FieldMustBeNumber: 'O valor enviado não é um number',

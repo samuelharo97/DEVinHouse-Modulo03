@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Param, Delete, UsePipes } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Delete,
+  UsePipes,
+  Body,
+} from '@nestjs/common';
 import { StateService } from '../../states/services/state.service';
 import { CityService } from '../services/city.service';
 import axios from 'axios';
@@ -6,6 +14,9 @@ import { City } from '../interfaces';
 import { ApiTags } from '@nestjs/swagger';
 import { CityEntity } from '../entities/city.entity';
 import { NumberValidationPipe } from 'src/core/constraints/number-validation.pipe';
+import * as https from 'https';
+import * as crypto from 'crypto';
+import { CreateCityDto } from '../dto/create-city.dto';
 
 @ApiTags('cities')
 @Controller('city')
@@ -20,6 +31,16 @@ export class CityController {
   async getById(@Param('id') id: number): Promise<CityEntity> {
     try {
       return await this.cityService.findById(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post()
+  async create(@Body() body: CreateCityDto): Promise<string> {
+    try {
+      await this.cityService.addCustomCity(body);
+      return 'Cidade salva com sucesso';
     } catch (error) {
       throw error;
     }
