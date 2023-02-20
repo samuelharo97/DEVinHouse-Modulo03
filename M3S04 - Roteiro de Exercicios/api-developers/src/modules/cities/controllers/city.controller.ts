@@ -37,7 +37,7 @@ export class CityController {
   }
 
   @Post()
-  async Create(@Body() body: CreateCityDto): Promise<string> {
+  async create(@Body() body: CreateCityDto): Promise<string> {
     try {
       await this.cityService.addCustomCity(body);
       return 'Cidade salva com sucesso';
@@ -48,7 +48,7 @@ export class CityController {
 
   @Delete(':id')
   @UsePipes(new NumberValidationPipe())
-  async DeleteById(@Param('id') id: number): Promise<object> {
+  async deleteById(@Param('id') id: number): Promise<object> {
     try {
       await this.cityService.deleteCity(id);
       return { acknowledged: true, deletedCount: 1 };
@@ -59,12 +59,12 @@ export class CityController {
 
   @Patch(':id')
   @UsePipes(new NumberValidationPipe())
-  async UpdateById(
+  async updateById(
     @Param('id') id: number,
     @Body() body: CreateCityDto,
   ): Promise<string> {
     try {
-      await this.UpdateById(id, body);
+      await this.updateById(id, body);
       return 'Cidade atualizada com sucesso';
     } catch (error) {
       throw error;
@@ -93,7 +93,7 @@ export class CityController {
       });
       return 'Cidades salvas com sucesso';
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 }
