@@ -1,11 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCityDto } from '../dto/create-city.dto';
 import { CityRepository } from '../city.repository';
 import { CityEntity } from '../entities/city.entity';
+import { StateRepository } from 'src/modules/states/state.repository';
 
 @Injectable()
 export class CityService {
-  constructor(private readonly cityRepository: CityRepository) {}
+  constructor(
+    private readonly cityRepository: CityRepository,
+    private readonly stateRepository: StateRepository,
+  ) {}
 
   async findById(id: number): Promise<CityEntity> {
     const foundCity = await this.cityRepository.getById(id);
@@ -14,6 +22,29 @@ export class CityService {
     }
 
     return foundCity;
+  }
+
+  async addCustomCity(city: CreateCityDto): Promise<void> {
+    await this.stateRepository.findOneByOrFail({ id: city.state_id });
+    console.log('found');
+    const cityAlreadyExists = await this.stateRepository.findOne({
+      where: { name: city.name },
+    });
+
+    if (cityAlreadyExists) {
+      throw new ConflictException('cityAlreadyExists');
+    }
+
+    await this.createCity(city);
+  }
+
+  async updateCity(id: number, body: CreateCityDto): Promise<any> {
+    const city = await this.findById(id);
+
+    city.name = body.name;
+    city.state_id = body.state_id;
+
+    await this.cityRepository.save(city);
   }
 
   async createCity(newCity: CreateCityDto): Promise<void> {
@@ -25,11 +56,6 @@ export class CityService {
     if (!foundCity) {
       throw new NotFoundException('cityNotFound');
     }
-
-    try {
-      await this.cityRepository.delete(foundCity);
-    } catch (error) {
-      throw new Error('could not delete city');
-    }
+    await this.cityRepository.delete(foundCity);
   }
 }

@@ -1,10 +1,21 @@
-import { Controller, Post, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Delete,
+  UsePipes,
+  Body,
+  Patch,
+} from '@nestjs/common';
 import { StateService } from '../../states/services/state.service';
 import { CityService } from '../services/city.service';
 import axios from 'axios';
 import { City } from '../interfaces';
 import { ApiTags } from '@nestjs/swagger';
 import { CityEntity } from '../entities/city.entity';
+import { NumberValidationPipe } from 'src/core/constraints/number-validation.pipe';
+import { CreateCityDto } from '../dto/create-city.dto';
 
 @ApiTags('cities')
 @Controller('city')
@@ -15,8 +26,48 @@ export class CityController {
   ) {}
 
   @Get(':id')
+  @UsePipes(new NumberValidationPipe())
   async getById(@Param('id') id: number): Promise<CityEntity> {
-    return await this.cityService.findById(id);
+    try {
+      return await this.cityService.findById(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post()
+  async Create(@Body() body: CreateCityDto): Promise<string> {
+    try {
+      await this.cityService.addCustomCity(body);
+      return 'Cidade salva com sucesso';
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Delete(':id')
+  @UsePipes(new NumberValidationPipe())
+  async DeleteById(@Param('id') id: number): Promise<object> {
+    try {
+      await this.cityService.deleteCity(id);
+      return { acknowledged: true, deletedCount: 1 };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Patch(':id')
+  @UsePipes(new NumberValidationPipe())
+  async UpdateById(
+    @Param('id') id: number,
+    @Body() body: CreateCityDto,
+  ): Promise<string> {
+    try {
+      await this.UpdateById(id, body);
+      return 'Cidade atualizada com sucesso';
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Post('createAllCities')
