@@ -6,6 +6,7 @@ import {
   Delete,
   UsePipes,
   Body,
+  Patch,
 } from '@nestjs/common';
 import { StateService } from '../../states/services/state.service';
 import { CityService } from '../services/city.service';
@@ -35,7 +36,7 @@ export class CityController {
   }
 
   @Post()
-  async create(@Body() body: CreateCityDto): Promise<string> {
+  async Create(@Body() body: CreateCityDto): Promise<string> {
     try {
       await this.cityService.addCustomCity(body);
       return 'Cidade salva com sucesso';
@@ -46,10 +47,24 @@ export class CityController {
 
   @Delete(':id')
   @UsePipes(new NumberValidationPipe())
-  async DeleteQueryBuilder(@Param('id') id: number): Promise<object> {
+  async DeleteById(@Param('id') id: number): Promise<object> {
     try {
       await this.cityService.deleteCity(id);
       return { acknowledged: true, deletedCount: 1 };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Patch(':id')
+  @UsePipes(new NumberValidationPipe())
+  async UpdateById(
+    @Param('id') id: number,
+    @Body() body: CreateCityDto,
+  ): Promise<string> {
+    try {
+      await this.UpdateById(id, body);
+      return 'Cidade atualizada com sucesso';
     } catch (error) {
       throw error;
     }

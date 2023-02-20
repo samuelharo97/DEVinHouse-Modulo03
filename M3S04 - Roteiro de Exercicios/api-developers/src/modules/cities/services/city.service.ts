@@ -38,6 +38,15 @@ export class CityService {
     await this.createCity(city);
   }
 
+  async updateCity(id: number, body: CreateCityDto): Promise<any> {
+    const city = await this.findById(id);
+
+    city.name = body.name;
+    city.state_id = body.state_id;
+
+    await this.cityRepository.save(city);
+  }
+
   async createCity(newCity: CreateCityDto): Promise<void> {
     await this.cityRepository.createCity(newCity);
   }
