@@ -1,5 +1,5 @@
 import { CreateCountryDto } from 'src/core/dtos';
-import { CountryEntity } from 'src/core/entities';
+import { CityEntity, CountryEntity, StateEntity } from 'src/core/entities';
 
 export class TestStatic {
   static countryData(): CountryEntity {
@@ -12,6 +12,19 @@ export class TestStatic {
     country.deletedAt = null;
 
     return country;
+  }
+
+  static cityData(): CityEntity {
+    const city = new CityEntity();
+    city.id = 1;
+    city.name = 'Curitiba';
+    city.state_id = 2;
+    city.state = new StateEntity();
+    city.createdAt = new Date();
+    city.updatedAt = new Date();
+    city.deletedAt = null;
+
+    return city;
   }
 
   static countryDto(): CreateCountryDto {

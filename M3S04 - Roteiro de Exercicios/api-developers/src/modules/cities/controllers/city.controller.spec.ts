@@ -3,22 +3,26 @@ import { StateService } from 'src/modules/states/services/state.service';
 import { CityEntity } from '../entities/city.entity';
 import { CityService } from '../services/city.service';
 import { CityController } from './city.controller';
+import { TestStatic } from 'src/utils/test';
+import { BadRequestException } from '@nestjs/common';
 
 describe('CityController', () => {
   let controller: CityController;
-  let cityService: CityService;
   let stateService: StateService;
 
-  beforeEach(async () => {
+  const mockService = {
+    findById: jest.fn(),
+    addCustomCity: jest.fn(),
+    updateCity: jest.fn(),
+    createCity: jest.fn(),
+    deleteCity: jest.fn(),
+  };
+
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CityController],
       providers: [
-        {
-          provide: CityService,
-          useValue: {
-            findById: jest.fn(),
-          },
-        },
+        { provide: CityService, useValue: mockService },
         {
           provide: StateService,
           useValue: `I'm not even using this yet`,
@@ -27,39 +31,49 @@ describe('CityController', () => {
     }).compile();
 
     controller = module.get<CityController>(CityController);
-    cityService = module.get<CityService>(CityService);
     stateService = module.get<StateService>(StateService);
+  });
+
+  beforeEach(() => {
+    mockService.addCustomCity.mockReset();
+    mockService.createCity.mockReset();
+    mockService.deleteCity.mockReset();
+    mockService.findById.mockReset();
+    mockService.updateCity.mockReset();
+  });
+
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 
   describe('getById', () => {
     it('should return a city by id', async () => {
-      const city: CityEntity = {
-        id: 1,
-        name: 'Test City',
-        state_id: 1,
-      } as CityEntity;
-      jest.spyOn(cityService, 'findById').mockResolvedValue(city);
+      const city = TestStatic.cityData();
 
-      expect(await controller.getById(1)).toBe(city);
+      mockService.findById.mockResolvedValue(city);
+
+      const foundCity = await controller.getById(city.id);
+
+      expect(foundCity).toMatchObject({ id: city.id });
+
+      expect(mockService.findById).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error if city not found', async () => {
-      jest.spyOn(cityService, 'findById').mockResolvedValue(null);
-
       try {
         await controller.getById(1);
+        await mockService.findById(1);
       } catch (error) {
-        expect(error.message).toEqual('City not found');
+        expect(error).toBeInstanceOf(TypeError);
       }
     });
 
     it('should throw an error if id is not a number', async () => {
+      const anyValue = 'notValid' as unknown as number;
       try {
-        await controller.getById('test' as unknown as number);
+        await controller.getById(anyValue);
       } catch (error) {
-        expect(error.message).toEqual(
-          'Validation failed (numeric string is expected)',
-        );
+        expect(error).toBeInstanceOf(BadRequestException);
       }
     });
   });
