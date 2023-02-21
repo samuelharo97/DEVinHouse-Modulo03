@@ -39,14 +39,19 @@ export class CityService {
   }
 
   async updateCity(id: number, body: CreateCityDto): Promise<string> {
-    const city = await this.findById(id);
+    try {
+      const city = await this.findById(id);
 
-    city.name = body.name;
-    city.state_id = body.state_id;
+      city.name = body.name;
 
-    await this.cityRepository.save(city);
+      city.state_id = body.state_id;
 
-    return 'Cidade atualizada com sucesso';
+      await this.cityRepository.save(city);
+
+      return 'Cidade atualizada com sucesso';
+    } catch (error) {
+      throw error;
+    }
   }
 
   async createCity(newCity: CreateCityDto): Promise<void> {

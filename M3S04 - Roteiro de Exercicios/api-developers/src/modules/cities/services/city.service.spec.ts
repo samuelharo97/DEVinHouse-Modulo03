@@ -106,7 +106,7 @@ describe('CityService', () => {
     });
   });
 
-  describe('createCity method', () => {
+  describe('createCity', () => {
     it('should create a city with valid input', async () => {
       const mockCity = TestStatic.cityData();
 
@@ -123,6 +123,43 @@ describe('CityService', () => {
       await service.createCity(mockCity).catch((error: Error) => {
         expect(error).toThrowError();
       });
+    });
+  });
+
+  describe('updateCity', () => {
+    it('should update a city if valid input', async () => {
+      const cityDto = TestStatic.cityDto();
+      const city = TestStatic.cityData();
+
+      jest.spyOn(service, 'findById').mockResolvedValue(city);
+
+      city.name = cityDto.name;
+      city.state_id = cityDto.state_id;
+
+      await mockCityRepository.save(city);
+      expect(mockCityRepository.save).toHaveBeenCalledTimes(1);
+    });
+    it('should throw error when it fails to find city', async () => {
+      service.findById(undefined).catch((error: Error) => {
+        expect(error).toBeInstanceOf(NotFoundException);
+      });
+
+      expect(mockCityRepository.save).toHaveBeenCalledTimes(0);
+    });
+
+    it('should throw error when it fails to update city', async () => {
+      const cityDto = TestStatic.cityDto();
+      const city = TestStatic.cityData();
+
+      jest.spyOn(service, 'findById').mockResolvedValue(city);
+
+      jest.spyOn(mockCityRepository, 'save').mockRejectedValue(new Error());
+
+      try {
+        await service.updateCity(city.id, cityDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+      }
     });
   });
 });
