@@ -26,7 +26,7 @@ export class CityService {
 
   async addCustomCity(city: CreateCityDto): Promise<void> {
     await this.stateRepository.findOneByOrFail({ id: city.state_id });
-    console.log('found');
+
     const cityAlreadyExists = await this.stateRepository.findOne({
       where: { name: city.name },
     });

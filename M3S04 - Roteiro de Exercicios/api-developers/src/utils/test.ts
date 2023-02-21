@@ -1,4 +1,4 @@
-import { CreateCountryDto } from 'src/core/dtos';
+import { CreateCityDto, CreateCountryDto } from 'src/core/dtos';
 import { CityEntity, CountryEntity, StateEntity } from 'src/core/entities';
 
 export class TestStatic {
@@ -27,12 +27,35 @@ export class TestStatic {
     return city;
   }
 
+  static cityDto(): CreateCityDto {
+    const createCityDto = new CreateCityDto();
+    createCityDto.name = 'Curitiba';
+    createCityDto.state_id = 2;
+
+    return createCityDto;
+  }
+
   static countryDto(): CreateCountryDto {
     const countryBodyDto = new CreateCountryDto();
     countryBodyDto.language = 'Português';
     countryBodyDto.name = 'Brasil';
 
     return countryBodyDto;
+  }
+
+  static stateData(): StateEntity {
+    const state = new StateEntity();
+
+    state.id = 1;
+    state.country = new CountryEntity();
+    state.country_id = 1;
+    state.initials = 'SP';
+    state.name = 'São Paulo';
+    state.createdAt = new Date();
+    state.updatedAt = new Date();
+    state.deletedAt = null;
+
+    return state;
   }
 
   static countriesData(): CountryEntity[] {

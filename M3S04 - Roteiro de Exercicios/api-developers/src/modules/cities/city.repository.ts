@@ -18,10 +18,14 @@ export class CityRepository extends Repository<CityEntity> {
   }
 
   async createCity(newCity: CreateCityDto): Promise<void> {
-    const city = new CityEntity();
-    city.state_id = newCity.state_id;
-    city.name = newCity.name;
+    try {
+      const city = new CityEntity();
+      city.state_id = newCity.state_id;
+      city.name = newCity.name;
 
-    await this.save(city);
+      await this.save(city);
+    } catch (error) {
+      throw error;
+    }
   }
 }
