@@ -49,6 +49,9 @@ export class CityController {
   @Delete(':id')
   @UsePipes(new NumberValidationPipe())
   async deleteById(@Param('id') id: number): Promise<object> {
+    if (!isNumber(id)) {
+      throw new BadRequestException('FieldMustBeNumber');
+    }
     try {
       await this.cityService.deleteCity(id);
       return { acknowledged: true, deletedCount: 1 };
@@ -63,9 +66,12 @@ export class CityController {
     @Param('id') id: number,
     @Body() body: CreateCityDto,
   ): Promise<string> {
+    if (!isNumber(id)) {
+      throw new BadRequestException('FieldMustBeNumber');
+    }
     try {
-      await this.updateById(id, body);
-      return 'Cidade atualizada com sucesso';
+      const response = await this.cityService.updateCity(id, body);
+      return response;
     } catch (error) {
       throw error;
     }

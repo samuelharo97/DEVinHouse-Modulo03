@@ -159,4 +159,40 @@ describe('CityController', () => {
       await expect(controller.createAllCities()).rejects.toThrow();
     });
   });
+
+  describe('updateById', () => {
+    it('should update a city successfully', async () => {
+      const id = 1;
+      const body = TestStatic.cityDto();
+
+      jest
+        .spyOn(mockCityService, 'updateCity')
+        .mockResolvedValue('Cidade atualizada com sucesso');
+
+      const response = await mockCityService.updateCity(id, body);
+
+      expect(response).toBe('Cidade atualizada com sucesso');
+    });
+
+    it('should throw an error if updateById method fails', async () => {
+      const id = 1;
+      const body = TestStatic.cityDto();
+
+      jest.spyOn(controller, 'updateById').mockRejectedValue(new Error());
+
+      await expect(controller.updateById(id, body)).rejects.toThrowError(Error);
+      expect(controller.updateById).toHaveBeenCalledWith(1, body);
+    });
+
+    it('should throw an error if id parameter is not a number', async () => {
+      const id = 'invalidId';
+      const body = TestStatic.cityDto();
+
+      await controller
+        .updateById(id as unknown as number, body)
+        .catch((error: Error) => {
+          expect(error).toBeInstanceOf(Error);
+        });
+    });
+  });
 });
