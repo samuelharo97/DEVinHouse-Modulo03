@@ -53,8 +53,8 @@ export class CityController {
       throw new BadRequestException('FieldMustBeNumber');
     }
     try {
-      await this.cityService.deleteCity(id);
-      return { acknowledged: true, deletedCount: 1 };
+      const response = await this.cityService.deleteCity(id);
+      return response;
     } catch (error) {
       throw error;
     }

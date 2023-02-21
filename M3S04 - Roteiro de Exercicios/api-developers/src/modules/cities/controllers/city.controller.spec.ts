@@ -195,4 +195,36 @@ describe('CityController', () => {
         });
     });
   });
+  describe('deleteById', () => {
+    it('should delete a city successfully', async () => {
+      const id = 1;
+
+      jest
+        .spyOn(mockCityService, 'deleteCity')
+        .mockResolvedValue({ acknowledged: true, deletedCount: 1 });
+
+      const response = await mockCityService.deleteCity(id);
+
+      expect(response).toMatchObject({ acknowledged: true, deletedCount: 1 });
+    });
+
+    it('should throw an error if deleteById method fails', async () => {
+      const id = 1;
+
+      jest.spyOn(controller, 'deleteById').mockRejectedValue(new Error());
+
+      await expect(controller.deleteById(id)).rejects.toThrowError(Error);
+      expect(controller.deleteById).toHaveBeenCalledWith(1);
+    });
+
+    it('should throw an error if id parameter is not a number', async () => {
+      const id = 'invalidId';
+
+      await controller
+        .deleteById(id as unknown as number)
+        .catch((error: Error) => {
+          expect(error).toBeInstanceOf(Error);
+        });
+    });
+  });
 });

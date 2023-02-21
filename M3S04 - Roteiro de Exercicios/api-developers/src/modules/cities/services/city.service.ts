@@ -58,11 +58,13 @@ export class CityService {
     await this.cityRepository.createCity(newCity);
   }
 
-  async deleteCity(id: number): Promise<void> {
+  async deleteCity(id: number): Promise<object> {
     const foundCity = await this.cityRepository.getById(id);
     if (!foundCity) {
       throw new NotFoundException('cityNotFound');
     }
     await this.cityRepository.delete(foundCity);
+
+    return { acknowledged: true, deletedCount: 1 };
   }
 }
