@@ -13,6 +13,7 @@ describe('CityService', () => {
     getById: jest.fn(),
     findOne: jest.fn(),
     save: jest.fn(),
+    delete: jest.fn(),
     createCity: jest.fn(),
   };
 
@@ -43,6 +44,7 @@ describe('CityService', () => {
     mockCityRepository.save.mockReset();
     mockCityRepository.findOne.mockReset();
     mockCityRepository.getById.mockReset();
+    mockCityRepository.delete.mockReset();
     mockCityRepository.createCity.mockReset();
   });
 
@@ -157,6 +159,38 @@ describe('CityService', () => {
 
       try {
         await service.updateCity(city.id, cityDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+      }
+    });
+  });
+
+  describe('deleteCity', () => {
+    it('should delete a city if valid input', async () => {
+      const city = TestStatic.cityData();
+
+      jest.spyOn(service, 'findById').mockResolvedValue(city);
+
+      await mockCityRepository.delete(city);
+      expect(mockCityRepository.delete).toHaveBeenCalledTimes(1);
+    });
+    it('should throw error when it fails to find city', async () => {
+      service.findById(undefined).catch((error: Error) => {
+        expect(error).toBeInstanceOf(NotFoundException);
+      });
+
+      expect(mockCityRepository.delete).toHaveBeenCalledTimes(0);
+    });
+
+    it('should throw error when it fails to delete city', async () => {
+      const city = TestStatic.cityData();
+
+      jest.spyOn(service, 'findById').mockResolvedValue(city);
+
+      jest.spyOn(mockCityRepository, 'delete').mockRejectedValue(new Error());
+
+      try {
+        await service.deleteCity(city.id);
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
       }
