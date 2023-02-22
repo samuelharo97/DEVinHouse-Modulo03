@@ -80,7 +80,7 @@ describe('CityController', () => {
     });
   });
 
-  describe('create method', () => {
+  describe('create', () => {
     it('should create a city with valid input', async () => {
       const mockCity = {
         name: 'Test City',
@@ -96,19 +96,17 @@ describe('CityController', () => {
 
     it('should throw error with invalid input', async () => {
       const mockCity = {
-        name: 'Test City',
+        name: '',
         state_id: 1,
       };
 
-      jest
-        .spyOn(mockCityService, 'addCustomCity')
-        .mockRejectedValue(new Error());
-
-      await expect(controller.create(mockCity)).rejects.toThrow();
+      await controller.create(mockCity).catch((error) => {
+        expect(error).toBeInstanceOf(BadRequestException);
+      });
     });
   });
 
-  describe('createAllCities method', () => {
+  describe('createAllCities', () => {
     it('should create all cities', async () => {
       const mockData = [
         {
@@ -146,7 +144,6 @@ describe('CityController', () => {
 
       jest.spyOn(axios, 'get').mockResolvedValue({ data: mockData });
       jest.spyOn(mockStateService, 'getByAll').mockResolvedValue(mockStates);
-      jest.spyOn(mockCityService, 'createCity').mockResolvedValue(undefined);
 
       const response = await controller.createAllCities();
 

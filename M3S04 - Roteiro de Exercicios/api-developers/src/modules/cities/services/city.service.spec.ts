@@ -48,20 +48,27 @@ describe('CityService', () => {
     mockCityRepository.createCity.mockReset();
   });
 
-  it('cityService should be defined', () => {
+  it('CityService should be defined', () => {
     expect(service).toBeDefined();
   });
 
   it('cityRepository should be defined', () => {
-    expect(CityRepository).toBeDefined();
+    expect(mockCityRepository).toBeDefined();
+  });
+
+  it('stateRepository should be defined', () => {
+    expect(mockStateRepository).toBeDefined();
   });
 
   describe('findById', () => {
     it('should return a city by id', async () => {
       const mockCity = TestStatic.cityData();
+
       jest.spyOn(mockCityRepository, 'getById').mockResolvedValue(mockCity);
 
       expect(await service.findById(1)).toBe(mockCity);
+
+      expect(mockCityRepository.getById).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error if city not found', async () => {
@@ -71,8 +78,10 @@ describe('CityService', () => {
         await service.findById(1);
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
+
         expect(error.message).toEqual('cityNotFound');
       }
+      expect(mockCityRepository.getById).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -139,6 +148,7 @@ describe('CityService', () => {
       city.state_id = cityDto.state_id;
 
       await mockCityRepository.save(city);
+
       expect(mockCityRepository.save).toHaveBeenCalledTimes(1);
     });
     it('should throw error when it fails to find city', async () => {
