@@ -138,20 +138,21 @@ describe('CityService', () => {
   });
 
   describe('updateCity', () => {
-    it('should update a city if valid input', async () => {
-      const cityDto = TestStatic.cityDto();
-      const city = TestStatic.cityData();
+    it('should update a city if city exists', async () => {
+      const updatedCityData = TestStatic.cityDto();
+      const existingCityData = TestStatic.cityData();
+      jest.spyOn(service, 'findById').mockResolvedValue(existingCityData);
 
-      jest.spyOn(service, 'findById').mockResolvedValue(city);
-
-      city.name = cityDto.name;
-      city.state_id = cityDto.state_id;
-
-      await mockCityRepository.save(city);
+      existingCityData.name = updatedCityData.name;
+      existingCityData.state_id = updatedCityData.state_id;
+      await mockCityRepository.save(existingCityData);
 
       expect(mockCityRepository.save).toHaveBeenCalledTimes(1);
+      expect(existingCityData.name).toBe(updatedCityData.name);
+      expect(existingCityData.state_id).toBe(updatedCityData.state_id);
     });
-    it('should throw error when it fails to find city', async () => {
+
+    it('should throw error if city not found', async () => {
       service.findById(undefined).catch((error: Error) => {
         expect(error).toBeInstanceOf(NotFoundException);
       });
@@ -178,17 +179,24 @@ describe('CityService', () => {
   describe('deleteCity', () => {
     it('should delete a city if valid input', async () => {
       const city = TestStatic.cityData();
-
       jest.spyOn(service, 'findById').mockResolvedValue(city);
 
       await mockCityRepository.delete(city);
       expect(mockCityRepository.delete).toHaveBeenCalledTimes(1);
-    });
-    it('should throw error when it fails to find city', async () => {
-      service.findById(undefined).catch((error: Error) => {
-        expect(error).toBeInstanceOf(NotFoundException);
-      });
 
+      jest.spyOn(service, 'findById').mockResolvedValue(null);
+      expect(await service.findById(city.id)).toBeNull();
+    });
+
+    it('should throw error when it fails to find city', async () => {
+      const city = TestStatic.cityData();
+
+      const foundCity = await mockCityRepository.getById(city.id);
+      expect(foundCity).toBeUndefined();
+
+      jest.spyOn(service, 'findById').mockResolvedValue(null);
+
+      await expect(service.deleteCity(city.id)).rejects.toThrow('cityNotFound');
       expect(mockCityRepository.delete).toHaveBeenCalledTimes(0);
     });
 
