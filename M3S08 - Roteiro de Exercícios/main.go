@@ -12,5 +12,16 @@ func sumAndDiff(num1 int, num2 int) {
 	fmt.Printf("Sum is %d and difference is %d", sum, diff)
 }
 
+// Exercício 02 - Escreva um programa em Go que recebe uma string como input e mostra no console o tamanho da string.
+
+func stringLen(str string) {
+
+	fmt.Println(len(str))
+
+}
+
 func main() {
+
+	stringLen("Samuka")
+
 }
