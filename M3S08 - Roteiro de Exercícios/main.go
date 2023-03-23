@@ -103,7 +103,7 @@ func baseAndExpoent() {
 	fmt.Printf("%v elevado a %v é igual a %v\n", base, exponent, result)
 }
 
-// Escreva um programa em Go que aceita uma string como input e mostra no console o seu palíndromo.
+// Exercício 07 - Escreva um programa em Go que aceita uma string como input e mostra no console o seu palíndromo.
 
 func isPalindrome() {
 	var input string
@@ -130,4 +130,31 @@ func isPalindrome() {
 	}
 }
 
-func main() {}
+// Exercício 08 - Escreva  um programa em Go que mostra no console o fatorial do número recebido como parâmetro.
+
+func factorial(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return n * factorial(n-1)
+}
+
+func showFactorial() {
+	var num int
+
+	fmt.Print("Digite um número inteiro positivo: ")
+	fmt.Scanln(&num)
+
+	if num < 0 {
+		fmt.Println("Número inválido. Digite um número inteiro positivo.")
+		return
+	}
+
+	fmt.Printf("%d! = %d\n", num, factorial(num))
+}
+
+func main() {
+
+	showFactorial()
+
+}
