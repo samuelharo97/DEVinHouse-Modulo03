@@ -67,9 +67,16 @@ func wordCounter(input string) {
 
 }
 
+// Exercício 05 - Escreva um programa em Go que recebe uma frase/sentença como input e mostra no console a sentença com todas as palavras capitalizadas.
+
+func toUppercase(input string) {
+
+	fmt.Println(strings.ToUpper(input))
+
+}
+
 func main() {
 
-	wordCounter("This is a string with 7 words")
-
+	toUppercase("this should work")
 
 }
