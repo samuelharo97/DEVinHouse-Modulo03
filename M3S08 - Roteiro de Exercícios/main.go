@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -62,21 +63,71 @@ func printPrimeNum(num int) {
 
 // Exercício 04 - Escreva um programa em Go que recebe uma frase/sentença como input e mostra no console a quantidade de palavras que tem naquela sentença.
 
-func wordCounter(input string) {
+func wordCounter() {
+
+	var input string
+
+	fmt.Print("Digite uma frase: ")
+	fmt.Scan(&input)
 	fmt.Println(len(strings.Split(input, " ")))
 
 }
 
 // Exercício 05 - Escreva um programa em Go que recebe uma frase/sentença como input e mostra no console a sentença com todas as palavras capitalizadas.
 
-func toUppercase(input string) {
+func toUppercase() {
+
+	var input string
+
+	fmt.Print("Digite algo em letra mínuscula: ")
+	fmt.Scan(&input)
 
 	fmt.Println(strings.ToUpper(input))
 
 }
 
-func main() {
+// Exercício 06 - Escreva um programa em Go que recebe dois números como input e mostra no console o primeiro número elevado ao segundo número.
 
-	toUppercase("this should work")
+func baseAndExpoent() {
+	var base float64
+	var exponent float64
 
+	fmt.Print("Digite a base: ")
+	fmt.Scanln(&base)
+
+	fmt.Print("Digite o expoente: ")
+	fmt.Scanln(&exponent)
+
+	result := math.Pow(base, exponent)
+
+	fmt.Printf("%v elevado a %v é igual a %v\n", base, exponent, result)
 }
+
+// Escreva um programa em Go que aceita uma string como input e mostra no console o seu palíndromo.
+
+func isPalindrome() {
+	var input string
+
+	fmt.Print("Digite uma palavra ou frase: ")
+	fmt.Scanln(&input)
+
+	// Remover espaços em branco e transformar em minúsculas
+	input = strings.ToLower(strings.ReplaceAll(input, " ", ""))
+
+	// Verificar se a string é um palíndromo
+	isPalindrome := true
+	for i := 0; i < len(input)/2; i++ {
+		if input[i] != input[len(input)-i-1] {
+			isPalindrome = false
+			break
+		}
+	}
+
+	if isPalindrome {
+		fmt.Printf("%q é um palíndromo\n", input)
+	} else {
+		fmt.Printf("%q não é um palíndromo\n", input)
+	}
+}
+
+func main() {}
