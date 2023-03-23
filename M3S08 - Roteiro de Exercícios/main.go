@@ -153,8 +153,31 @@ func showFactorial() {
 	fmt.Printf("%d! = %d\n", num, factorial(num))
 }
 
-func main() {
+// Exercício 09 - Escreva um programa em Go que mostra no console quais palavras se repetem e quantas vezes isso acontece em uma string recebida como input (frases).
 
-	showFactorial()
+func repeatedWords() {
+
+	var input string
+	fmt.Println("Digite uma frase:")
+	fmt.Scanln(&input)
+
+	wordCount := make(map[string]int)
+
+	words := strings.Fields(input)
+
+	for _, word := range words {
+		wordCount[word]++
+	}
+
+	fmt.Println("Palavras repetidas:")
+	for word, count := range wordCount {
+		if count > 1 {
+			fmt.Printf("%s: %d\n", word, count)
+		}
+	}
+
+}
+
+func main() {
 
 }
