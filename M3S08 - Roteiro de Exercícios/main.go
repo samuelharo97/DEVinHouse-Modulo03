@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Exercício 01 - Escreva um programa em Go que receba dois inteiros como entrada e mostra no console sua soma e sua diferença.
@@ -59,8 +60,16 @@ func printPrimeNum(num int) {
 
 }
 
+// Exercício 04 - Escreva um programa em Go que recebe uma frase/sentença como input e mostra no console a quantidade de palavras que tem naquela sentença.
+
+func wordCounter(input string) {
+	fmt.Println(len(strings.Split(input, " ")))
+
+}
+
 func main() {
 
-	printPrimeNum(100)
+	wordCounter("This is a string with 7 words")
+
 
 }
