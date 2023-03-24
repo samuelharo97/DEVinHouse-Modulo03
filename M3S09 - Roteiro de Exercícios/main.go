@@ -42,6 +42,20 @@ func highestNum(arr []int) int {
 
 // Ex 3 - Crie um dicionário de frutas
 
+// func main() {
+
+// 	frutas := map[string]string{
+// 		"maca":     "é uma fruta que cresce em arvore",
+// 		"banana":   "é uma fruta amarela",
+// 		"morango":  "O morango é uma fruta vermelha, cuja origem é a Europa",
+// 		"melancia": "A melancia é uma fruta rasteira, originária da África",
+// 	}
+
+// 	fmt.Println(frutas)
+// }
+
+// Ex 4 - Procurando no dicionário de frutas
+
 func main() {
 
 	frutas := map[string]string{
@@ -51,5 +65,7 @@ func main() {
 		"melancia": "A melancia é uma fruta rasteira, originária da África",
 	}
 
-	fmt.Println(frutas)
+	fmt.Println(frutas["morango"])
 }
+
+
