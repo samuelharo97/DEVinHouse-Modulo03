@@ -76,7 +76,7 @@ func highestNum(arr []int) int {
 
 // Ex 5 - Concatenando Strings
 
-func strConcat() {
+func strConcat() string {
 
 	var str1 string
 	var str2 string
@@ -91,9 +91,35 @@ func strConcat() {
 
 	fmt.Println(concat)
 
+	return concat
+
+}
+
+// Ex 6 - Imprimindo os dias da semana
+
+func weekDay(num int) {
+	switch num {
+	case 1:
+		fmt.Println("Domingo")
+	case 2:
+		fmt.Println("Segunda-Feira")
+	case 3:
+		fmt.Println("Terça-Feira")
+	case 4:
+		fmt.Println("Quarta-Feira")
+	case 5:
+		fmt.Println("Quinta-Feira")
+	case 6:
+		fmt.Println("Sexta-Feira")
+	case 7:
+		fmt.Println("Domingo")
+	default:
+		fmt.Println("Número Inválido")
+	}
 }
 
 func main() {
 
-	strConcat()
+	weekDay(6)
+
 }
