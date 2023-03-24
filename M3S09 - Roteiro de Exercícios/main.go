@@ -56,20 +56,44 @@ func highestNum(arr []int) int {
 
 // Ex 4 - Procurando no dicionário de frutas
 
+// func main() {
+
+// 	frutas := map[string]string{
+// 		"maca":     "é uma fruta que cresce em arvore",
+// 		"banana":   "é uma fruta amarela",
+// 		"morango":  "O morango é uma fruta vermelha, cuja origem é a Europa",
+// 		"melancia": "A melancia é uma fruta rasteira, originária da África",
+// 	}
+
+// 	for i, v := range frutas {
+
+// 		if i == "morango" {
+// 			fmt.Println(v)
+// 		}
+// 	}
+
+// }
+
+// Ex 5 - Concatenando Strings
+
+func strConcat() {
+
+	var str1 string
+	var str2 string
+
+	fmt.Println("Digite a primeira palavra: ")
+	fmt.Scan(&str1)
+
+	fmt.Println("Digite a segunda palavra: ")
+	fmt.Scan(&str2)
+
+	concat := str1 + str2
+
+	fmt.Println(concat)
+
+}
+
 func main() {
 
-	frutas := map[string]string{
-		"maca":     "é uma fruta que cresce em arvore",
-		"banana":   "é uma fruta amarela",
-		"morango":  "O morango é uma fruta vermelha, cuja origem é a Europa",
-		"melancia": "A melancia é uma fruta rasteira, originária da África",
-	}
-
-	for i, v := range frutas {
-
-		if i == "morango" {
-			fmt.Println(v)
-		}
-	}
-
+	strConcat()
 }
