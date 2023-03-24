@@ -65,7 +65,11 @@ func main() {
 		"melancia": "A melancia é uma fruta rasteira, originária da África",
 	}
 
-	fmt.Println(frutas["morango"])
+	for i, v := range frutas {
+
+		if i == "morango" {
+			fmt.Println(v)
+		}
+	}
+
 }
-
-
