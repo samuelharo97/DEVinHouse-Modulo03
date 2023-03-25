@@ -145,8 +145,18 @@ func returnPrimeNums() []int {
 	return primes
 }
 
+// Ex 9 - É impar ou Par
+
+func oddsOrEven(n int) string {
+
+	if n%2 == 0 {
+		return "é um número par"
+	} else {
+		return "é um número ímpar"
+	}
+
+}
+
 func main() {
-
-	returnPrimeNums()
-
+	fmt.Println(oddsOrEven(11))
 }

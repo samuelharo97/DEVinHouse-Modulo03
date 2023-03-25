@@ -1,5 +1,6 @@
 package labmath
 
+// Ex 8 - Pacote LabMath
 func IsPrime(num int) bool {
 	if num <= 1 {
 		return false
