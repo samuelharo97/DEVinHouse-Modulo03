@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"lab/labmath"
+)
 
 // Ex 1 - Soma dos elementos de um array
 
@@ -120,24 +123,6 @@ func weekDay(num int) {
 
 // Ex 7 - Encontre todos os números primos no array
 
-func isPrime(num int) bool {
-	if num <= 1 {
-		return false
-	}
-	if num == 2 {
-		return true
-	}
-	if num%2 == 0 {
-		return false
-	}
-	for i := 3; i*i <= num; i++ {
-		if num%i == 0 {
-			return false
-		}
-	}
-	return true
-}
-
 func returnPrimeNums() []int {
 
 	arr := [100]int{}
@@ -150,7 +135,7 @@ func returnPrimeNums() []int {
 
 	for _, num := range arr {
 
-		if isPrime(num) {
+		if labmath.IsPrime(num) {
 			primes = append(primes, num)
 		}
 
