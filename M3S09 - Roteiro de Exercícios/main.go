@@ -118,8 +118,50 @@ func weekDay(num int) {
 	}
 }
 
+// Ex 7 - Encontre todos os números primos no array
+
+func isPrime(num int) bool {
+	if num <= 1 {
+		return false
+	}
+	if num == 2 {
+		return true
+	}
+	if num%2 == 0 {
+		return false
+	}
+	for i := 3; i*i <= num; i++ {
+		if num%i == 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func returnPrimeNums() []int {
+
+	arr := [100]int{}
+
+	for i := 0; i < 100; i++ {
+		arr[i] = i
+	}
+
+	primes := []int{}
+
+	for _, num := range arr {
+
+		if isPrime(num) {
+			primes = append(primes, num)
+		}
+
+	}
+
+	fmt.Println(primes)
+	return primes
+}
+
 func main() {
 
-	weekDay(6)
+	returnPrimeNums()
 
 }
