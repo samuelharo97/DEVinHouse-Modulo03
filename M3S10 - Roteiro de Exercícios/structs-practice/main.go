@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Book struct {
 	title         string
 	author        string
@@ -38,7 +36,7 @@ type Person struct {
  } */
 
 // Ex 02 - Composição de Structs
-func main() {
+/* func main() {
 	person := Person{"Samuel", 26, Address{
 		"Rua 15", "Cidade 20", "SP", "18455-000",
 	}}
@@ -49,4 +47,6 @@ func main() {
 	fmt.Printf("Rua: %s\n", person.address.street)
 	fmt.Printf("Estado: %s\n", person.address.state)
 	fmt.Printf("CEP: %s\n", person.address.zipCode)
-}
+} */
+
+// Ex 03 - 
