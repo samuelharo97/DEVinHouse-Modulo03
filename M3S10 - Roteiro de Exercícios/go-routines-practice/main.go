@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	c := make(chan int, 10)
+	c := make(chan int)
 
 	go func() {
 		for i := 1; i <= 10; i++ {
@@ -18,13 +18,8 @@ func main() {
 		close(c)
 	}()
 
-	for {
-		nums, isOpen := <-c
-		if !isOpen {
-			break
-		}
+	for nums := range c {
 		fmt.Println(nums)
-
 	}
 
 	fmt.Println("All done")
