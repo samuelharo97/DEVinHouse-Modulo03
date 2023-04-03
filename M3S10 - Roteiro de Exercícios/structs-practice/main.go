@@ -48,5 +48,3 @@ type Person struct {
 	fmt.Printf("Estado: %s\n", person.address.state)
 	fmt.Printf("CEP: %s\n", person.address.zipCode)
 } */
-
-// Ex 03 - 
