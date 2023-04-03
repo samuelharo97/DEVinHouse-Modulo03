@@ -2,22 +2,30 @@ package main
 
 import (
 	"fmt"
-	"sync"
 )
+
+// Ex 06 - Go Routines!
+// Ex 07 - Channels
 
 func main() {
 
-	var waitGroup sync.WaitGroup
-
-	waitGroup.Add(1)
+	c := make(chan int, 10)
 
 	go func() {
-		for i := 1; i < 11; i++ {
-			fmt.Println(i)
+		for i := 1; i <= 10; i++ {
+			c <- i
 		}
-		waitGroup.Done()
+		close(c)
 	}()
 
-	waitGroup.Wait()
+	for {
+		nums, isOpen := <-c
+		if !isOpen {
+			break
+		}
+		fmt.Println(nums)
+
+	}
+
 	fmt.Println("All done")
 }
