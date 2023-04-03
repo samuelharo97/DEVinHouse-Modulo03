@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// Ex 3 - Pseudo-herança
 type Veiculo struct {
 	marca  string
 	modelo string

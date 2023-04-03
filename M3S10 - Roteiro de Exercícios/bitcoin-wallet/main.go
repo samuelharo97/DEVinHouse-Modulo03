@@ -1,5 +1,8 @@
 package main
 
+// Ex 4 - Carteira de Bitcoins
+// Ex 5 - Minerador de bitcoins
+
 import (
 	"errors"
 	"fmt"
@@ -75,5 +78,5 @@ func main() {
 
 	value := mineBitcoin(miner)
 
-	fmt.Printf("O rig %s acaba de minerar bitcoins. Valor minerado: %f bitcoins\n", miner.rig, value)
+	fmt.Printf("O rig %s acaba de minerar BTC. Valor minerado: %f BTC\n", miner.rig, value)
 }
