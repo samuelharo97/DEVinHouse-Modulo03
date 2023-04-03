@@ -3,12 +3,27 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 )
 
 type Wallet interface {
 	Balance() float64
 	SendBitcoin(value float64, destination string) error
 	ReceiveBitcoin(value float64) error
+}
+
+type Miner interface {
+	Mine() float64
+}
+
+type BitcoinMiner struct{}
+
+func (m *BitcoinMiner) Mine() float64 {
+	return rand.Float64() * 2
+}
+
+func mineBitcoin(m Miner) float64 {
+	return m.Mine()
 }
 
 type Address struct {
@@ -53,4 +68,10 @@ func main() {
 	}
 
 	fmt.Printf("Saldo atual: %f bitcoins\n", endereco.Balance())
+
+	miner := &BitcoinMiner{}
+
+	value := mineBitcoin(miner)
+
+	fmt.Printf("Valor minerado: %f bitcoins\n", value)
 }
