@@ -16,7 +16,9 @@ type Miner interface {
 	Mine() float64
 }
 
-type BitcoinMiner struct{}
+type BitcoinMiner struct {
+	rig string
+}
 
 func (m *BitcoinMiner) Mine() float64 {
 	return rand.Float64() * 2
@@ -69,9 +71,9 @@ func main() {
 
 	fmt.Printf("Saldo atual: %f bitcoins\n", endereco.Balance())
 
-	miner := &BitcoinMiner{}
+	miner := &BitcoinMiner{rig: "X10-2023"}
 
 	value := mineBitcoin(miner)
 
-	fmt.Printf("Valor minerado: %f bitcoins\n", value)
+	fmt.Printf("O rig %s acaba de minerar bitcoins. Valor minerado: %f bitcoins\n", miner.rig, value)
 }
