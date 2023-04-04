@@ -2,69 +2,90 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
+// Ex 09 - Task Manager pt1
+// Ex 10 - Task Manager pt2
 
-// Ex 9 - Task Manager pt1
-
-type Task struct {
-	name string // Tasks can only have 1 word. Use apostrophe for more than 1 word - ex: "This-task-is-5-words"
+// Tasks can only have 1 word. Use apostrophe for more than 1 word - ex: "This-task-is-5-words"
+type task struct {
+	description string
 }
 
-type TaskList interface {
-	addTask(task Task)
-	removeTask(index int)
-	listTasks()
+type taskList struct {
+	tasks []task
 }
 
-type TaskSlice struct {
-	tasks []Task
+func (tl *taskList) addTask(t task) {
+	tl.tasks = append(tl.tasks, t)
 }
 
-func (t *TaskSlice) addTask(task Task) {
-	t.tasks = append(t.tasks, task)
-	t.listTasks()
-}
-
-func (t *TaskSlice) removeTask(index int) {
-	t.tasks = append(t.tasks[:index], t.tasks[index+1:]...)
-	t.listTasks()
-}
-
-func (t *TaskSlice) listTasks() {
-	fmt.Println("Current tasks:")
-	for i, task := range t.tasks {
-		fmt.Printf("%d. %s\n", i+1, task.name)
+func (tl *taskList) removeTask(index int) {
+	if index < 0 || index >= len(tl.tasks) {
+		fmt.Println("Invalid task index")
+		return
 	}
-	fmt.Println()
+	tl.tasks = append(tl.tasks[:index], tl.tasks[index+1:]...)
+}
+
+func (tl *taskList) listTasks() {
+	if len(tl.tasks) == 0 {
+		fmt.Println("No tasks")
+		return
+	}
+	for i, t := range tl.tasks {
+		fmt.Printf("%d. %s\n", i+1, t.description)
+	}
+}
+
+func displayTaskCount(tl *taskList, quitChan chan bool) {
+	for {
+		select {
+		case <-quitChan:
+			fmt.Println("Stopping task count display...")
+			return
+		default:
+			fmt.Printf("Current task count: %d\n", len(tl.tasks))
+			time.Sleep(5 * time.Second)
+		}
+	}
 }
 
 func main() {
-	tasks := TaskSlice{}
-	var input string
-	var index int
+	tasks := taskList{}
+	quitChan := make(chan bool)
+	defer close(quitChan)
+	go displayTaskCount(&tasks, quitChan)
+
 	for {
-		fmt.Print("Enter command (add, remove, list, or quit): ")
-		fmt.Scanln(&input)
-		switch input {
-		case "add":
-			fmt.Print("Enter task name: ")
-			fmt.Scanln(&input)
-			task := Task{name: input}
+		var command int
+		fmt.Println("Enter command:")
+		fmt.Println("1. Add task")
+		fmt.Println("2. Remove task")
+		fmt.Println("3. List tasks")
+		fmt.Println("4. Quit")
+		fmt.Scanln(&command)
+
+		switch command {
+		case 1:
+			var description string
+			fmt.Println("Enter task description:")
+			fmt.Scanln(&description)
+			task := task{description}
 			tasks.addTask(task)
-		case "remove":
 			tasks.listTasks()
-			fmt.Print("Enter task number to remove: ")
+		case 2:
+			var index int
+			fmt.Println("Enter task index:")
 			fmt.Scanln(&index)
-			index--
-			if index >= 0 && index < len(tasks.tasks) {
-				tasks.removeTask(index)
-			} else {
-				fmt.Println("Invalid task number")
-			}
-		case "list":
+			tasks.removeTask(index - 1)
 			tasks.listTasks()
-		case "quit":
-			fmt.Println("Quitting...")
+		case 3:
+			tasks.listTasks()
+		case 4:
+			fmt.Println("Exiting application...")
+			quitChan <- true
+			time.Sleep(1 * time.Second)
 			return
 		default:
 			fmt.Println("Invalid command")
